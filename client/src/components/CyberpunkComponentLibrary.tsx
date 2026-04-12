@@ -5,7 +5,7 @@ The hero should feel like a widescreen terminal stack with cohesive title color,
 Hover states should suggest unstable signal routing through irregular jitter and edge-born rectangular artifact blocks that appear briefly, then collapse back to a stable resting frame.
 */
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Cpu, LibraryBig, RadioTower, ShieldAlert, SquareTerminal, SwatchBook, Type } from "lucide-react";
 import { SignalPanel } from "@/components/SignalPanel";
 import { TerminalPreview } from "@/components/TerminalPreview";
@@ -37,6 +37,45 @@ const heroAccentChannels = [
 ];
 
 export function CyberpunkComponentLibrary() {
+  const heroRef = useRef<HTMLElement>(null);
+  const titleWordRef = useRef<HTMLSpanElement>(null);
+  const imageCardRef = useRef<HTMLDivElement>(null);
+  const [invertClip, setInvertClip] = useState<string>("inset(0 100% 0 0)");
+
+  const updateInvertClip = useCallback(() => {
+    const hero = heroRef.current;
+    const word = titleWordRef.current;
+    const img = imageCardRef.current;
+    if (!hero || !word || !img) return;
+
+    const wordRect = word.getBoundingClientRect();
+    const imgRect = img.getBoundingClientRect();
+
+    // Calculate overlap region relative to the word element
+    const overlapLeft = Math.max(imgRect.left, wordRect.left) - wordRect.left;
+    const overlapRight = Math.min(imgRect.right, wordRect.right) - wordRect.left;
+    const overlapTop = Math.max(imgRect.top, wordRect.top) - wordRect.top;
+    const overlapBottom = Math.min(imgRect.bottom, wordRect.bottom) - wordRect.top;
+
+    if (overlapLeft >= overlapRight || overlapTop >= overlapBottom) {
+      setInvertClip("inset(0 100% 0 0)");
+      return;
+    }
+
+    // clip-path inset: top right bottom left
+    const top = overlapTop;
+    const right = wordRect.width - overlapRight;
+    const bottom = wordRect.height - overlapBottom;
+    const left = overlapLeft;
+    setInvertClip(`inset(${top}px ${right}px ${bottom}px ${left}px)`);
+  }, []);
+
+  useEffect(() => {
+    updateInvertClip();
+    window.addEventListener("resize", updateInvertClip);
+    return () => window.removeEventListener("resize", updateInvertClip);
+  }, [updateInvertClip]);
+
   useEffect(() => {
     const glitchTargets = Array.from(document.querySelectorAll<HTMLElement>(".glitch-hover"));
 
@@ -65,8 +104,8 @@ export function CyberpunkComponentLibrary() {
       element.style.setProperty("--artifact-b-h", randomLength(0.3, 0.9));
       element.style.setProperty("--artifact-c-h", randomLength(0.25, 0.85));
       element.style.setProperty("--artifact-d-h", randomLength(0.35, 1));
-      element.style.setProperty("--artifact-shift", `${randomBetween(-8, 8).toFixed(1)}%`);
-      element.style.setProperty("--artifact-drift", `${randomBetween(-5, 5).toFixed(1)}%`);
+      element.style.setProperty("--artifact-shift", `${randomBetween(-12, 12).toFixed(1)}%`);
+      element.style.setProperty("--artifact-drift", `${randomBetween(-8, 8).toFixed(1)}%`);
     };
 
     const listeners = glitchTargets.map((element) => {
@@ -87,7 +126,7 @@ export function CyberpunkComponentLibrary() {
 
   return (
     <div className="cyber-library">
-      <section className="cyber-hero">
+      <section className="cyber-hero" ref={heroRef}>
         <div className="cyber-hero__copy">
           <p className="cyber-hero__eyebrow">CYBERPUNK COMPONENT LIBRARY // STANDALONE PAGE</p>
           <h1 className="cyber-hero__title" aria-label="Accent-heavy component library for a Night City terminal stack.">
@@ -98,8 +137,18 @@ export function CyberpunkComponentLibrary() {
               HEAVY
             </span>
             <span className="cyber-hero__title-line" data-tone="terminal">
-              <span className="cyber-hero__title-word cyber-hero__title-word--inverted" data-text="COMPONENT">
+              <span
+                ref={titleWordRef}
+                className="cyber-hero__title-word cyber-hero__title-word--inverted"
+              >
                 COMPONENT
+                <span
+                  className="cyber-hero__title-word--inverted-overlay"
+                  style={{ clipPath: invertClip }}
+                  aria-hidden="true"
+                >
+                  COMPONENT
+                </span>
               </span>
             </span>
             <span className="cyber-hero__title-line" data-tone="telemetry">
@@ -140,8 +189,8 @@ export function CyberpunkComponentLibrary() {
         </div>
 
         <div className="cyber-hero__visual">
-          <div className="hero-card hero-card--image hero-card--glow">
-            <img src={assetUrls.hero} alt="Cyberpunk 2077 user interface reference cover" />
+          <div ref={imageCardRef} className="hero-card hero-card--image hero-card--glow">
+            <img src={assetUrls.hero} alt="Cyberpunk 2077 user interface reference cover" onLoad={updateInvertClip} />
           </div>
 
 

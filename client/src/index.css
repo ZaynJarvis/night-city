@@ -1184,57 +1184,33 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
     }
   }
 
+  /* Glitch blocks snap on/off instantly — no fade, each block recovers discretely */
   @keyframes cp-edge-blocks {
-    0%,
-    8%,
-    100% {
-      opacity: 0;
-      transform: translate3d(0, 0, 0);
-    }
-    18% {
-      opacity: 0.78;
-      transform: translate3d(var(--artifact-shift, -4%), 0, 0);
-    }
-    32% {
-      opacity: 0.94;
-      transform: translate3d(calc(var(--artifact-shift, -4%) * -0.45), -2px, 0);
-    }
-    51% {
-      opacity: 0.68;
-      transform: translate3d(var(--artifact-drift, 3%), 1px, 0);
-    }
-    72% {
-      opacity: 0.34;
-      transform: translate3d(calc(var(--artifact-drift, 3%) * -0.35), 0, 0);
-    }
-    86% {
-      opacity: 0.12;
-      transform: translate3d(0, 0, 0);
-    }
+    0%,  5%  { opacity: 0; transform: translate3d(0, 0, 0); }
+    5.1%     { opacity: 0.92; transform: translate3d(var(--artifact-shift, -4%), 0, 0); }
+    20%      { opacity: 0.92; transform: translate3d(var(--artifact-shift, -4%), 0, 0); }
+    20.1%    { opacity: 0.88; transform: translate3d(calc(var(--artifact-shift, -4%) * -0.6), -2px, 0); }
+    38%      { opacity: 0.88; transform: translate3d(calc(var(--artifact-shift, -4%) * -0.6), -2px, 0); }
+    38.1%    { opacity: 0.82; transform: translate3d(var(--artifact-drift, 3%), 1px, 0); }
+    55%      { opacity: 0.82; transform: translate3d(var(--artifact-drift, 3%), 1px, 0); }
+    /* Blocks start snapping off one by one */
+    55.1%    { opacity: 0.6; transform: translate3d(calc(var(--artifact-drift, 3%) * -0.3), 0, 0); }
+    68%      { opacity: 0.6; transform: translate3d(calc(var(--artifact-drift, 3%) * -0.3), 0, 0); }
+    68.1%    { opacity: 0.3; transform: translate3d(0, 0, 0); }
+    80%      { opacity: 0.3; transform: translate3d(0, 0, 0); }
+    80.1%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
   }
 
   @keyframes cp-edge-blocks-tail {
-    0%,
-    22% {
-      opacity: 0;
-      transform: translate3d(0, 0, 0);
-    }
-    38% {
-      opacity: 0.56;
-      transform: translate3d(calc(var(--artifact-shift, -4%) * -0.25), 0, 0);
-    }
-    54% {
-      opacity: 0.72;
-      transform: translate3d(var(--artifact-drift, 3%), 0, 0);
-    }
-    69% {
-      opacity: 0.28;
-      transform: translate3d(calc(var(--artifact-drift, 3%) * -0.2), 0, 0);
-    }
-    100% {
-      opacity: 0;
-      transform: translate3d(0, 0, 0);
-    }
+    0%, 15%  { opacity: 0; transform: translate3d(0, 0, 0); }
+    15.1%    { opacity: 0.78; transform: translate3d(calc(var(--artifact-shift, -4%) * -0.3), 0, 0); }
+    32%      { opacity: 0.78; transform: translate3d(calc(var(--artifact-shift, -4%) * -0.3), 0, 0); }
+    32.1%    { opacity: 0.72; transform: translate3d(var(--artifact-drift, 3%), 0, 0); }
+    52%      { opacity: 0.72; transform: translate3d(var(--artifact-drift, 3%), 0, 0); }
+    /* Instant snap-off recovery */
+    52.1%    { opacity: 0.35; transform: translate3d(calc(var(--artifact-drift, 3%) * -0.15), 0, 0); }
+    70%      { opacity: 0.35; transform: translate3d(calc(var(--artifact-drift, 3%) * -0.15), 0, 0); }
+    70.1%, 100% { opacity: 0; transform: translate3d(0, 0, 0); }
   }
 
   @keyframes cp-hue-strobe {
@@ -1284,10 +1260,12 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   .cyber-hero__copy {
     position: relative;
     z-index: 2;
+    overflow: visible;
   }
 
   .cyber-hero__title {
     max-width: 9.3ch;
+    overflow: visible;
     color: rgba(248, 244, 235, 0.96);
     text-shadow: 0 0 16px rgba(255, 255, 255, 0.08);
   }
@@ -1320,34 +1298,30 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
     display: inline-block;
   }
 
+  .cyber-hero__title-line[data-tone="terminal"] {
+    overflow: visible;
+  }
+
   .cyber-hero__title-word--inverted {
-    isolation: isolate;
+    position: relative;
+    display: inline-block;
     color: #deffd3;
     text-shadow: 0 0 26px rgba(115, 248, 85, 0.24);
+    z-index: 10;
+    overflow: visible;
+    white-space: nowrap;
+    /* Extend to overlap the image column */
+    min-width: 160%;
   }
 
-  .cyber-hero__title-word--inverted::before {
-    content: "";
-    position: absolute;
-    top: 0.08em;
-    bottom: 0.08em;
-    left: 43%;
-    width: 30%;
-    background: linear-gradient(180deg, rgba(248, 250, 255, 0.86), rgba(178, 191, 210, 0.44));
-    clip-path: polygon(10% 0, 100% 0, 88% 100%, 0 100%);
-    box-shadow: 0 0 18px rgba(255, 255, 255, 0.16), 0 0 18px rgba(94, 246, 255, 0.16);
-    mix-blend-mode: screen;
-    pointer-events: none;
-  }
-
-  .cyber-hero__title-word--inverted::after {
-    content: attr(data-text);
+  .cyber-hero__title-word--inverted-overlay {
     position: absolute;
     inset: 0;
     color: #050505;
-    clip-path: polygon(43% 0, 73% 0, 69% 100%, 38% 100%);
     text-shadow: none;
     pointer-events: none;
+    transition: clip-path 0.05s linear;
+    /* The overlay sits on top with inverted color — only visible where clip-path reveals it (over image) */
   }
 
   .cyber-hero__body {
@@ -1487,21 +1461,29 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   }
 
   .glitch-hover::before {
+    /* RGB channel-separated horizontal slices — sharp edges, no gradient fade */
     background:
-      linear-gradient(90deg, rgba(247, 80, 73, 0.92), rgba(247, 80, 73, 0.08)) left 0 top var(--artifact-a-y, 16%) / var(--artifact-a-w, 18%) var(--artifact-a-h, 0.45rem) no-repeat,
-      linear-gradient(90deg, rgba(94, 246, 255, 0.9), rgba(94, 246, 255, 0.08)) right 0 top var(--artifact-b-y, 38%) / var(--artifact-b-w, 22%) var(--artifact-b-h, 0.7rem) no-repeat,
-      linear-gradient(90deg, rgba(115, 248, 85, 0.9), rgba(115, 248, 85, 0.08)) left 0 bottom var(--artifact-c-y, 14%) / var(--artifact-c-w, 16%) var(--artifact-c-h, 0.55rem) no-repeat,
-      linear-gradient(90deg, rgba(14, 14, 231, 0.82), rgba(14, 14, 231, 0.08)) right 0 bottom var(--artifact-d-y, 10%) / var(--artifact-d-w, 14%) var(--artifact-d-h, 0.85rem) no-repeat;
+      /* Red channel shift — left-anchored blocks */
+      rgba(247, 80, 73, 0.88) left 0 top var(--artifact-a-y, 16%) / var(--artifact-a-w, 18%) var(--artifact-a-h, 0.45rem) no-repeat,
+      rgba(247, 80, 73, 0.72) right 2% top calc(var(--artifact-a-y, 16%) + 1.2em) / calc(var(--artifact-a-w, 18%) * 0.6) 2px no-repeat,
+      /* Cyan channel shift — right-anchored blocks */
+      rgba(94, 246, 255, 0.84) right 0 top var(--artifact-b-y, 38%) / var(--artifact-b-w, 22%) var(--artifact-b-h, 0.7rem) no-repeat,
+      rgba(94, 246, 255, 0.6) left 4% top calc(var(--artifact-b-y, 38%) + 0.8em) / calc(var(--artifact-b-w, 22%) * 0.45) 1px no-repeat,
+      /* Green channel shift — left-anchored blocks */
+      rgba(115, 248, 85, 0.82) left 0 bottom var(--artifact-c-y, 14%) / var(--artifact-c-w, 16%) var(--artifact-c-h, 0.55rem) no-repeat,
+      /* Indigo channel — right-anchored block */
+      rgba(14, 14, 231, 0.76) right 0 bottom var(--artifact-d-y, 10%) / var(--artifact-d-w, 14%) var(--artifact-d-h, 0.85rem) no-repeat;
     mix-blend-mode: screen;
-    filter: saturate(1.22);
+    filter: saturate(1.35);
   }
 
   .glitch-hover::after {
+    /* Secondary interference lines — thin horizontal scanline artifacts */
     background:
-      linear-gradient(90deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0)) left 0 top calc(var(--artifact-a-y, 16%) + 6%) / 12% 2px no-repeat,
-      linear-gradient(90deg, rgba(247, 80, 73, 0.74), rgba(247, 80, 73, 0)) right 0 top calc(var(--artifact-b-y, 38%) + 8%) / 10% 0.24rem no-repeat,
-      linear-gradient(90deg, rgba(94, 246, 255, 0.8), rgba(94, 246, 255, 0)) left 0 bottom calc(var(--artifact-c-y, 14%) + 4%) / 9% 0.2rem no-repeat,
-      linear-gradient(90deg, rgba(115, 248, 85, 0.8), rgba(115, 248, 85, 0)) right 0 bottom calc(var(--artifact-d-y, 10%) + 5%) / 11% 0.28rem no-repeat;
+      rgba(255, 255, 255, 0.82) left 0 top calc(var(--artifact-a-y, 16%) + 6%) / 100% 1px no-repeat,
+      rgba(247, 80, 73, 0.65) right 0 top calc(var(--artifact-b-y, 38%) + 8%) / 40% 1px no-repeat,
+      rgba(94, 246, 255, 0.7) left 0 bottom calc(var(--artifact-c-y, 14%) + 4%) / 55% 1px no-repeat,
+      rgba(0, 0, 0, 0.5) left 0 bottom calc(var(--artifact-d-y, 10%) + 5%) / 100% 2px no-repeat;
     mix-blend-mode: screen;
   }
 
@@ -1526,7 +1508,7 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   .font-card:hover::before,
   .component-card:hover::before,
   .reference-library-card:hover::before {
-    animation: cp-edge-blocks 430ms steps(5, jump-none) 1 45ms;
+    animation: cp-edge-blocks 480ms steps(8, jump-none) 1 30ms;
   }
 
   .glitch-hover:hover::after,
@@ -1535,7 +1517,7 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   .font-card:hover::after,
   .component-card:hover::after,
   .reference-library-card:hover::after {
-    animation: cp-edge-blocks-tail 620ms steps(6, jump-none) 1 130ms;
+    animation: cp-edge-blocks-tail 560ms steps(7, jump-none) 1 80ms;
   }
 
   .signal-panel {
