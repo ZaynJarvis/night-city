@@ -1,33 +1,48 @@
-/*
-Style reminder — Tactical Neo-Militarism:
-Panels should feel mounted, clipped, and technical. Use thin cyan or white rails, near-black surfaces, compressed Rajdhani typography, and restrained red emphasis. Avoid soft cards and decorative roundness.
-*/
+// Design philosophy: Tactical Neo-Militarism for structural surfaces.
+// This component makes panels feel energized through clipped geometry,
+// reinforced rails, and visible accent channels instead of neutral cards.
 
 import { ReactNode } from "react";
+import { clsx } from "clsx";
+import type { AccentTone } from "@/lib/designSystem";
 
 type SignalPanelProps = {
-  eyebrow: string;
-  title: string;
-  children: ReactNode;
-  accent?: "red" | "cyan" | "green";
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  tone?: AccentTone;
+  className?: string;
+  children?: ReactNode;
 };
 
-export default function SignalPanel({
+const toneMap: Record<AccentTone, string> = {
+  critical: "signal-panel--critical",
+  terminal: "signal-panel--terminal",
+  telemetry: "signal-panel--telemetry",
+  indigo: "signal-panel--indigo",
+  warning: "signal-panel--warning",
+  neutral: "signal-panel--neutral",
+};
+
+export function SignalPanel({
   eyebrow,
   title,
+  body,
+  tone = "neutral",
+  className,
   children,
-  accent = "cyan",
 }: SignalPanelProps) {
   return (
-    <section className={`cp-panel cp-signal-panel accent-${accent}`}>
-      <div className="flex items-center justify-between gap-4 border-b border-[rgba(255,255,255,0.08)] px-5 py-4 sm:px-6">
-        <div>
-          <p className="cp-kicker">{eyebrow}</p>
-          <h3 className="cp-section-title text-left">{title}</h3>
-        </div>
-        <div className="cp-corner-glyph" aria-hidden="true" />
-      </div>
-      <div className="px-5 py-5 sm:px-6 sm:py-6">{children}</div>
+    <section className={clsx("signal-panel", toneMap[tone], className)}>
+      <div className="signal-panel__bevel" aria-hidden="true" />
+      {(eyebrow || title) && (
+        <header className="signal-panel__header">
+          {eyebrow ? <p className="signal-panel__eyebrow">{eyebrow}</p> : null}
+          {title ? <h3 className="signal-panel__title">{title}</h3> : null}
+        </header>
+      )}
+      {body ? <p className="signal-panel__body">{body}</p> : null}
+      {children ? <div className="signal-panel__content">{children}</div> : null}
     </section>
   );
 }
