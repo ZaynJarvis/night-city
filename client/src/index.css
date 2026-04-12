@@ -138,6 +138,7 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
 
   html {
     scroll-behavior: smooth;
+    background-color: rgb(100, 249, 78);
   }
 
   body {
