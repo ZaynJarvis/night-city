@@ -357,13 +357,16 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
   }
 
   .action-button--critical {
-    background: linear-gradient(90deg, rgba(247, 80, 73, 0.98), rgba(187, 65, 65, 0.96));
+    background: rgba(247, 80, 73, 0.15);
+    border-color: rgba(247, 80, 73, 0.46);
+    color: #ffd3d0;
     box-shadow: var(--cp-shadow-red);
   }
 
   .action-button--telemetry {
-    background: linear-gradient(90deg, rgba(94, 246, 255, 0.12), rgba(14, 14, 231, 0.4));
+    background: rgba(94, 246, 255, 0.12);
     border-color: rgba(94, 246, 255, 0.42);
+    color: #c9fcff;
     box-shadow: var(--cp-shadow-cyan);
   }
 
@@ -605,7 +608,7 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
   }
 
   .palette-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .palette-card,
@@ -621,9 +624,10 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
 
   .palette-card {
     display: grid;
-    grid-template-columns: 5rem minmax(0, 1fr);
-    gap: 0.9rem;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0.75rem;
     align-items: start;
+    padding: 0.75rem;
   }
 
   .palette-card__swatch {
@@ -636,7 +640,7 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
   .palette-card__title,
   .font-card__family {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 0.88rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -839,10 +843,12 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
   .terminal-chip {
     padding: 0.4rem 0.65rem;
     border: 1px solid rgba(255, 255, 255, 0.14);
+    clip-path: polygon(0 0, calc(100% - 0.55rem) 0, 100% 0.55rem, 100% 100%, 0.55rem 100%, 0 calc(100% - 0.55rem));
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
+    user-select: none;
   }
 
   .terminal-chip[data-tone="critical"] {
@@ -1018,10 +1024,12 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
   .component-card__states span {
     padding: 0.3rem 0.55rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    clip-path: polygon(0 0, calc(100% - 0.45rem) 0, 100% 0.45rem, 100% 100%, 0.45rem 100%, 0 calc(100% - 0.45rem));
     font-size: 0.76rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.7);
+    user-select: none;
   }
 
   .reference-surface-grid {
@@ -1102,7 +1110,6 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
     }
 
     .font-stack-preview,
-    .palette-grid,
     .generated-library__cards,
     .reference-library-list,
     .reference-surface-grid,
@@ -1110,6 +1117,8 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
     .config-grid {
       grid-template-columns: repeat(1, minmax(0, 1fr));
     }
+
+    /* Palette stays 3-col here; description visible */
   }
 
   @media (max-width: 720px) {
@@ -1124,7 +1133,7 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
 
     .cyber-hero__title {
       max-width: 12ch;
-      font-size: clamp(2.6rem, 14vw, 4rem);
+      font-size: clamp(2rem, 12vw, 3rem);
     }
 
     .cyber-hero__copy,
@@ -1140,8 +1149,95 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
       grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 
+    /* 2-per-row, hide description */
+    .palette-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .palette-card {
-      grid-template-columns: 1fr;
+      grid-template-columns: 2.4rem minmax(0, 1fr);
+      gap: 0.55rem;
+      padding: 0.6rem;
+      align-items: center;
+    }
+
+    .palette-card .palette-card__body {
+      display: none;
+    }
+
+    /* Collapse 4-column selection matrix to 2x2 on mobile */
+    .selection-matrix {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Reduce hero image height when stacked vertically */
+    .hero-card--image {
+      min-height: 13rem;
+    }
+
+    /* Smaller action buttons on mobile */
+    .action-button {
+      min-height: 2.8rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Reduce terminal tab / action button padding */
+    .terminal-tabs__button,
+    .terminal-action,
+    .selection-matrix__cell {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.82rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cyber-hero__title {
+      font-size: clamp(1.75rem, 10vw, 2.4rem);
+    }
+
+    .hero-card--image {
+      min-height: 10rem;
+    }
+
+    .hero-stat-grid strong {
+      font-size: 0.9rem;
+    }
+
+    .hero-stat-grid span {
+      font-size: 0.72rem;
+    }
+
+    .status-chip {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.55rem;
+    }
+
+    .cyber-hero__body,
+    .signal-panel__body,
+    .component-card__body,
+    .component-card__usage,
+    .palette-card__body,
+    .font-card__body,
+    .reference-library-card__body,
+    .generated-library__intro > :last-child,
+    .terminal-rule-list p,
+    .terminal-readout p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .signal-panel {
+      padding: 0.8rem;
+    }
+
+    .command-block,
+    .command-stream {
+      font-size: 0.78rem;
+    }
+
+    .footer-rails {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
     }
   }
 }
@@ -1585,11 +1681,11 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   }
 
   .palette-card__value {
-    margin: 0.28rem 0 0.45rem;
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.94rem;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.92);
+    margin: 0.18rem 0 0;
+    font-family: "Space Mono", monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.72);
   }
 
   .palette-card__body,
@@ -1709,6 +1805,70 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
     background:
       linear-gradient(90deg, rgba(247, 80, 73, 0.25), transparent 40%, rgba(94, 246, 255, 0.25));
     pointer-events: none;
+  }
+
+  /* === Global cyberpunk overrides for all button-like elements === */
+
+  /* Clip-path polygon corners for Shadcn interactive components */
+  [data-slot="button"] {
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 0.6rem) 0, 100% 0.6rem, 100% 100%, 0.6rem 100%, 0 calc(100% - 0.6rem));
+    border-radius: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  [data-slot="badge"] {
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 0.4rem) 0, 100% 0.4rem, 100% 100%, 0.4rem 100%, 0 calc(100% - 0.4rem));
+    border-radius: 0;
+    user-select: none;
+  }
+
+  [data-slot="toggle"] {
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 0.6rem) 0, 100% 0.6rem, 100% 100%, 0.6rem 100%, 0 calc(100% - 0.6rem));
+    border-radius: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  [data-slot="select-trigger"] {
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 0.6rem) 0, 100% 0.6rem, 100% 100%, 0.6rem 100%, 0 calc(100% - 0.6rem));
+    border-radius: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Overlay flex alignment for embedded glitch in base UI components */
+  [data-slot="button"] > .scanline-tear__overlay,
+  [data-slot="toggle"] > .scanline-tear__overlay,
+  [data-slot="badge"] > .scanline-tear__overlay,
+  [data-slot="select-trigger"] > .scanline-tear__overlay {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: inherit;
+  }
+
+  /* Prevent I-beam cursor on all button-like and chip elements */
+  button,
+  [role="button"],
+  .action-button,
+  .terminal-tabs__button,
+  .terminal-action,
+  .selection-matrix__cell,
+  .reference-library-card__links a,
+  .status-chip,
+  .terminal-chip {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Clip-path for reference library card links */
+  .reference-library-card__links a {
+    clip-path: polygon(0 0, calc(100% - 0.5rem) 0, 100% 0.5rem, 100% 100%, 0.5rem 100%, 0 calc(100% - 0.5rem));
   }
 
   /* === Hologram — 3D perspective + scanline sweep for section containers === */

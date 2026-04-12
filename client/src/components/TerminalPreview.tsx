@@ -4,6 +4,7 @@
 
 import { useMemo, useState } from "react";
 import { commandStream, configMatrix, mailboxThreads, terminalRules } from "@/lib/designSystem";
+import { ScanlineTear } from "@/components/ScanlineTear";
 
 export function TerminalPreview() {
   const [mode, setMode] = useState<"mailbox" | "config" | "selection">("mailbox");
@@ -33,15 +34,16 @@ export function TerminalPreview() {
             { key: "config", label: "CONFIG" },
             { key: "selection", label: "SELECTION" },
           ].map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              className="terminal-tabs__button"
-              data-active={mode === tab.key}
-              onClick={() => setMode(tab.key as "mailbox" | "config" | "selection")}
-            >
-              {tab.label}
-            </button>
+            <ScanlineTear key={tab.key} config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+              <button
+                type="button"
+                className="terminal-tabs__button"
+                data-active={mode === tab.key}
+                onClick={() => setMode(tab.key as "mailbox" | "config" | "selection")}
+              >
+                {tab.label}
+              </button>
+            </ScanlineTear>
           ))}
         </div>
       </div>
@@ -52,20 +54,21 @@ export function TerminalPreview() {
             <div className="terminal-module__title">A // MAIL BOX</div>
             <div className="terminal-message-list">
               {mailboxThreads.map((thread, index) => (
-                <button
-                  key={thread.subject}
-                  type="button"
-                  className="terminal-message-row"
-                  data-tone={thread.accent}
-                  data-selected={activeMessage?.subject === thread.subject}
-                  onClick={() => setSelectedMessage(thread.subject)}
-                >
-                  <div>
-                    <div className="terminal-message-row__subject">{thread.subject}</div>
-                    <div className="terminal-message-row__meta">FROM: {thread.sender}</div>
-                  </div>
-                  <div className="terminal-message-row__meta">0{index + 1}</div>
-                </button>
+                <ScanlineTear key={thread.subject} config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+                  <button
+                    type="button"
+                    className="terminal-message-row"
+                    data-tone={thread.accent}
+                    data-selected={activeMessage?.subject === thread.subject}
+                    onClick={() => setSelectedMessage(thread.subject)}
+                  >
+                    <div>
+                      <div className="terminal-message-row__subject">{thread.subject}</div>
+                      <div className="terminal-message-row__meta">FROM: {thread.sender}</div>
+                    </div>
+                    <div className="terminal-message-row__meta">0{index + 1}</div>
+                  </button>
+                </ScanlineTear>
               ))}
             </div>
           </div>
@@ -86,18 +89,18 @@ export function TerminalPreview() {
                 Route-level communication should use a high-contrast headline, clear ownership metadata, and wide action strips. The selected row must invert decisively rather than merely tinting, because ambiguity weakens the machine-like reading of the interface.
               </p>
               <div className="terminal-actions">
-                <button type="button" className="terminal-action" data-tone="terminal">
-                  REPLY
-                </button>
-                <button type="button" className="terminal-action" data-tone="telemetry">
-                  FORWARD
-                </button>
-                <button type="button" className="terminal-action" data-tone="critical">
-                  DELETE
-                </button>
-                <button type="button" className="terminal-action" data-tone="warning">
-                  REPORT SPAM
-                </button>
+                <ScanlineTear config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+                  <button type="button" className="terminal-action" data-tone="terminal">REPLY</button>
+                </ScanlineTear>
+                <ScanlineTear config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+                  <button type="button" className="terminal-action" data-tone="telemetry">FORWARD</button>
+                </ScanlineTear>
+                <ScanlineTear config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+                  <button type="button" className="terminal-action" data-tone="critical">DELETE</button>
+                </ScanlineTear>
+                <ScanlineTear config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+                  <button type="button" className="terminal-action" data-tone="warning">REPORT SPAM</button>
+                </ScanlineTear>
               </div>
             </div>
           </div>
@@ -139,15 +142,16 @@ export function TerminalPreview() {
               {Array.from({ length: 16 }).map((_, index) => {
                 const tone = index === 5 || index === 10 ? "critical" : index % 3 === 0 ? "telemetry" : "terminal";
                 return (
-                  <button
-                    key={index}
-                    type="button"
-                    className="selection-matrix__cell"
-                    data-tone={tone}
-                    data-selected={index === 6 || index === 7}
-                  >
-                    T{index + 1}
-                  </button>
+                  <ScanlineTear key={index} config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+                    <button
+                      type="button"
+                      className="selection-matrix__cell"
+                      data-tone={tone}
+                      data-selected={index === 6 || index === 7}
+                    >
+                      T{index + 1}
+                    </button>
+                  </ScanlineTear>
                 );
               })}
             </div>

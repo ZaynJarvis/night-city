@@ -127,14 +127,18 @@ export function CyberpunkComponentLibrary() {
             ))}
           </div>
           <div className="cyber-hero__actions">
-            <a href="https://github.com/ZaynJarvis/night-city" target="_blank" rel="noreferrer" className="action-button action-button--telemetry">
-              <Github size={16} />
-              SOURCE CODE
-            </a>
-            <a href="https://x.com/zaynjarvis" target="_blank" rel="noreferrer" className="action-button action-button--critical">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              @ZAYNJARVIS
-            </a>
+            <ScanlineTear config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+              <a href="https://github.com/ZaynJarvis/night-city" target="_blank" rel="noreferrer" className="action-button action-button--telemetry">
+                <Github size={16} />
+                SOURCE CODE
+              </a>
+            </ScanlineTear>
+            <ScanlineTear config={{ trigger: 'hover', minInterval: 1800, maxInterval: 4500, minSeverity: 0.3, maxSeverity: 0.8 }}>
+              <a href="https://x.com/zaynjarvis" target="_blank" rel="noreferrer" className="action-button action-button--critical">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                @ZAYNJARVIS
+              </a>
+            </ScanlineTear>
           </div>
         </div>
 

@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { cva, type VariantProps } from "class-variance-authority";
-
+import { useGlitch } from "@/hooks/useGlitch";
 import { cn } from "@/lib/utils";
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none transition-[color,box-shadow] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
+  "inline-flex items-center justify-center gap-2 text-sm font-medium hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none transition-[color,box-shadow] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
   {
     variants: {
       variant: {
@@ -30,15 +30,41 @@ function Toggle({
   className,
   variant,
   size,
+  children,
+  ref: externalRef,
   ...props
 }: React.ComponentProps<typeof TogglePrimitive.Root> &
   VariantProps<typeof toggleVariants>) {
+  const glitchRef = useGlitch<HTMLButtonElement>();
+  const composedRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      (glitchRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+      if (typeof externalRef === "function") externalRef(node);
+      else if (externalRef) (externalRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+    },
+    [externalRef, glitchRef],
+  );
+
   return (
     <TogglePrimitive.Root
       data-slot="toggle"
+      ref={composedRef}
       className={cn(toggleVariants({ variant, size, className }))}
       {...props}
-    />
+    >
+      {children}
+      <span
+        className="scanline-tear__overlay"
+        aria-hidden="true"
+        style={{
+          clipPath: `inset(var(--glitch-clip-top, 100%) 0 var(--glitch-clip-bottom, 100%) 0)`,
+          transform: `translateX(var(--glitch-offset-x, 0px))`,
+          visibility: "var(--glitch-visibility, hidden)" as React.CSSProperties["visibility"],
+        }}
+      >
+        {children}
+      </span>
+    </TogglePrimitive.Root>
   );
 }
 
