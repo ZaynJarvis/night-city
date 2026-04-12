@@ -1153,53 +1153,87 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
 
 @layer components {
   @keyframes cp-glitch-jump {
-    0% {
-      transform: translate3d(0, 0, 0);
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) skewX(0deg);
       filter: saturate(1) brightness(1);
     }
-    12% {
-      transform: translate3d(-1px, 0, 0);
+    9% {
+      transform: translate3d(var(--glitch-x-1, -1.4px), var(--glitch-y-1, 0.2px), 0) skewX(var(--glitch-skew-1, -0.6deg));
       filter: saturate(1.12) brightness(1.04);
     }
-    24% {
-      transform: translate3d(2px, -1px, 0);
-      filter: saturate(1.18) brightness(1.08);
+    18% {
+      transform: translate3d(calc(var(--glitch-x-2, 2.4px) * -0.6), calc(var(--glitch-y-2, -0.8px) * 0.4), 0) skewX(calc(var(--glitch-skew-2, 0.8deg) * -1));
+      filter: saturate(1.22) brightness(1.08);
     }
-    36% {
-      transform: translate3d(-2px, 1px, 0);
+    31% {
+      transform: translate3d(var(--glitch-x-2, 2.4px), var(--glitch-y-2, -0.8px), 0) skewX(var(--glitch-skew-2, 0.8deg));
       filter: saturate(1.28) brightness(1.1);
     }
-    48% {
-      transform: translate3d(1px, 0, 0);
-      filter: saturate(1.18) brightness(1.06);
+    43% {
+      transform: translate3d(calc(var(--glitch-x-3, -1.2px) * -1), var(--glitch-y-3, 1px), 0) skewX(calc(var(--glitch-skew-1, -0.6deg) * 0.5));
+      filter: saturate(1.18) brightness(1.05);
     }
-    60% {
-      transform: translate3d(-1px, -1px, 0);
-      filter: saturate(1.24) brightness(1.12);
+    57% {
+      transform: translate3d(var(--glitch-x-3, -1.2px), calc(var(--glitch-y-1, 0.2px) * -1), 0) skewX(calc(var(--glitch-skew-2, 0.8deg) * -0.35));
+      filter: saturate(1.26) brightness(1.11);
     }
-    72% {
-      transform: translate3d(2px, 1px, 0);
-      filter: saturate(1.14) brightness(1.05);
-    }
-    100% {
-      transform: translate3d(0, 0, 0);
-      filter: saturate(1) brightness(1);
+    74% {
+      transform: translate3d(calc(var(--glitch-x-1, -1.4px) * 0.35), calc(var(--glitch-y-2, -0.8px) * -0.6), 0) skewX(calc(var(--glitch-skew-1, -0.6deg) * 0.2));
+      filter: saturate(1.08) brightness(1.03);
     }
   }
 
-  @keyframes cp-scan-breakup {
+  @keyframes cp-edge-blocks {
     0%,
+    8%,
     100% {
-      opacity: 0.06;
-      transform: translateX(-8%);
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
     }
-    40% {
-      opacity: 0.16;
-      transform: translateX(4%);
+    18% {
+      opacity: 0.78;
+      transform: translate3d(var(--artifact-shift, -4%), 0, 0);
     }
-    75% {
-      opacity: 0.1;
-      transform: translateX(-2%);
+    32% {
+      opacity: 0.94;
+      transform: translate3d(calc(var(--artifact-shift, -4%) * -0.45), -2px, 0);
+    }
+    51% {
+      opacity: 0.68;
+      transform: translate3d(var(--artifact-drift, 3%), 1px, 0);
+    }
+    72% {
+      opacity: 0.34;
+      transform: translate3d(calc(var(--artifact-drift, 3%) * -0.35), 0, 0);
+    }
+    86% {
+      opacity: 0.12;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes cp-edge-blocks-tail {
+    0%,
+    22% {
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+    }
+    38% {
+      opacity: 0.56;
+      transform: translate3d(calc(var(--artifact-shift, -4%) * -0.25), 0, 0);
+    }
+    54% {
+      opacity: 0.72;
+      transform: translate3d(var(--artifact-drift, 3%), 0, 0);
+    }
+    69% {
+      opacity: 0.28;
+      transform: translate3d(calc(var(--artifact-drift, 3%) * -0.2), 0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -1254,33 +1288,66 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
 
   .cyber-hero__title {
     max-width: 9.3ch;
-    text-shadow: 0 0 16px rgba(255, 255, 255, 0.1);
+    color: rgba(248, 244, 235, 0.96);
+    text-shadow: 0 0 16px rgba(255, 255, 255, 0.08);
   }
 
   .cyber-hero__title-line {
     position: relative;
     display: block;
     color: rgba(248, 244, 235, 0.96);
+    text-shadow: 0 0 14px rgba(255, 255, 255, 0.08);
   }
 
   .cyber-hero__title-line[data-tone="critical"] {
-    color: #ffd5d2;
-    text-shadow: 0 0 28px rgba(247, 80, 73, 0.32);
+    text-shadow: 0 0 24px rgba(247, 80, 73, 0.18), 0 0 8px rgba(255, 255, 255, 0.08);
   }
 
   .cyber-hero__title-line[data-tone="terminal"] {
-    color: #dfffd6;
-    text-shadow: 0 0 28px rgba(115, 248, 85, 0.26);
+    text-shadow: 0 0 24px rgba(115, 248, 85, 0.18), 0 0 8px rgba(255, 255, 255, 0.08);
   }
 
   .cyber-hero__title-line[data-tone="telemetry"] {
-    color: #d8fcff;
-    text-shadow: 0 0 28px rgba(94, 246, 255, 0.26);
+    text-shadow: 0 0 24px rgba(94, 246, 255, 0.18), 0 0 8px rgba(255, 255, 255, 0.08);
   }
 
   .cyber-hero__title-line[data-tone="indigo"] {
-    color: #d7d8ff;
-    text-shadow: 0 0 28px rgba(14, 14, 231, 0.28);
+    text-shadow: 0 0 24px rgba(14, 14, 231, 0.18), 0 0 8px rgba(255, 255, 255, 0.08);
+  }
+
+  .cyber-hero__title-word {
+    position: relative;
+    display: inline-block;
+  }
+
+  .cyber-hero__title-word--inverted {
+    isolation: isolate;
+    color: #deffd3;
+    text-shadow: 0 0 26px rgba(115, 248, 85, 0.24);
+  }
+
+  .cyber-hero__title-word--inverted::before {
+    content: "";
+    position: absolute;
+    top: 0.08em;
+    bottom: 0.08em;
+    left: 43%;
+    width: 30%;
+    background: linear-gradient(180deg, rgba(248, 250, 255, 0.86), rgba(178, 191, 210, 0.44));
+    clip-path: polygon(10% 0, 100% 0, 88% 100%, 0 100%);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.16), 0 0 18px rgba(94, 246, 255, 0.16);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  .cyber-hero__title-word--inverted::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: #050505;
+    clip-path: polygon(43% 0, 73% 0, 69% 100%, 38% 100%);
+    text-shadow: none;
+    pointer-events: none;
   }
 
   .cyber-hero__body {
@@ -1371,65 +1438,6 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
     pointer-events: none;
   }
 
-  .cyber-hero__breach {
-    position: absolute;
-    top: 22%;
-    left: -6%;
-    right: -8%;
-    height: clamp(7rem, 14vw, 12rem);
-    pointer-events: none;
-    z-index: 4;
-  }
-
-  .cyber-hero__breach-band,
-  .cyber-hero__breach-core {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    border-radius: 1.1rem;
-  }
-
-  .cyber-hero__breach-band {
-    left: 18%;
-    width: 56%;
-    height: 72%;
-    border: 3px solid rgba(247, 80, 73, 0.9);
-    box-shadow: 0 0 32px rgba(247, 80, 73, 0.22);
-    background: linear-gradient(90deg, rgba(247, 80, 73, 0.08), rgba(247, 80, 73, 0.02));
-  }
-
-  .cyber-hero__breach-core {
-    left: 50%;
-    width: 16%;
-    height: 88%;
-    overflow: hidden;
-    backdrop-filter: invert(1) saturate(1.6) contrast(1.12);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 34px rgba(255, 255, 255, 0.12);
-  }
-
-  .cyber-hero__breach-core::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0, rgba(255, 255, 255, 0.16) 2px, transparent 2px, transparent 8px);
-    mix-blend-mode: overlay;
-  }
-
-  .cyber-hero__breach-label {
-    position: absolute;
-    right: 8%;
-    top: -0.2rem;
-    padding: 0.4rem 0.65rem;
-    background: rgba(5, 5, 5, 0.72);
-    border: 1px solid rgba(247, 80, 73, 0.5);
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #ffd0cc;
-  }
-
   .hero-card--overlay {
     border-color: rgba(94, 246, 255, 0.32);
     background:
@@ -1469,18 +1477,32 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
     isolation: isolate;
   }
 
+  .glitch-hover::before,
   .glitch-hover::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     opacity: 0;
+  }
+
+  .glitch-hover::before {
     background:
-      repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0, rgba(255, 255, 255, 0.14) 1px, transparent 1px, transparent 5px),
-      linear-gradient(90deg, rgba(247, 80, 73, 0.14), transparent 34%, rgba(94, 246, 255, 0.14) 66%, rgba(115, 248, 85, 0.14));
+      linear-gradient(90deg, rgba(247, 80, 73, 0.92), rgba(247, 80, 73, 0.08)) left 0 top var(--artifact-a-y, 16%) / var(--artifact-a-w, 18%) var(--artifact-a-h, 0.45rem) no-repeat,
+      linear-gradient(90deg, rgba(94, 246, 255, 0.9), rgba(94, 246, 255, 0.08)) right 0 top var(--artifact-b-y, 38%) / var(--artifact-b-w, 22%) var(--artifact-b-h, 0.7rem) no-repeat,
+      linear-gradient(90deg, rgba(115, 248, 85, 0.9), rgba(115, 248, 85, 0.08)) left 0 bottom var(--artifact-c-y, 14%) / var(--artifact-c-w, 16%) var(--artifact-c-h, 0.55rem) no-repeat,
+      linear-gradient(90deg, rgba(14, 14, 231, 0.82), rgba(14, 14, 231, 0.08)) right 0 bottom var(--artifact-d-y, 10%) / var(--artifact-d-w, 14%) var(--artifact-d-h, 0.85rem) no-repeat;
     mix-blend-mode: screen;
-    transform: translateX(-10%);
-    transition: opacity 120ms ease;
+    filter: saturate(1.22);
+  }
+
+  .glitch-hover::after {
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0)) left 0 top calc(var(--artifact-a-y, 16%) + 6%) / 12% 2px no-repeat,
+      linear-gradient(90deg, rgba(247, 80, 73, 0.74), rgba(247, 80, 73, 0)) right 0 top calc(var(--artifact-b-y, 38%) + 8%) / 10% 0.24rem no-repeat,
+      linear-gradient(90deg, rgba(94, 246, 255, 0.8), rgba(94, 246, 255, 0)) left 0 bottom calc(var(--artifact-c-y, 14%) + 4%) / 9% 0.2rem no-repeat,
+      linear-gradient(90deg, rgba(115, 248, 85, 0.8), rgba(115, 248, 85, 0)) right 0 bottom calc(var(--artifact-d-y, 10%) + 5%) / 11% 0.28rem no-repeat;
+    mix-blend-mode: screen;
   }
 
   .glitch-hover:hover,
@@ -1495,7 +1517,16 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   .selection-matrix__cell:hover,
   .config-grid__item:hover,
   .signal-panel:hover {
-    animation: cp-glitch-jump 250ms steps(2, jump-none) 1, cp-hue-strobe 320ms linear 1;
+    animation: cp-glitch-jump 340ms steps(4, jump-none) 1, cp-hue-strobe 420ms linear 1;
+  }
+
+  .glitch-hover:hover::before,
+  .glitch-hover:focus-visible::before,
+  .palette-card:hover::before,
+  .font-card:hover::before,
+  .component-card:hover::before,
+  .reference-library-card:hover::before {
+    animation: cp-edge-blocks 430ms steps(5, jump-none) 1 45ms;
   }
 
   .glitch-hover:hover::after,
@@ -1503,10 +1534,8 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   .palette-card:hover::after,
   .font-card:hover::after,
   .component-card:hover::after,
-  .reference-library-card:hover::after,
-  .signal-panel:hover::before {
-    opacity: 1;
-    animation: cp-scan-breakup 260ms steps(3, jump-none) 1;
+  .reference-library-card:hover::after {
+    animation: cp-edge-blocks-tail 620ms steps(6, jump-none) 1 130ms;
   }
 
   .signal-panel {
@@ -1665,22 +1694,6 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .cyber-hero__breach {
-      left: 6%;
-      right: 2%;
-      top: auto;
-      bottom: -1.25rem;
-    }
-
-    .cyber-hero__breach-band {
-      width: 72%;
-      left: 12%;
-    }
-
-    .cyber-hero__breach-core {
-      left: 58%;
-      width: 20%;
-    }
   }
 
   @media (max-width: 720px) {
@@ -1692,29 +1705,5 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
       grid-template-columns: 1fr;
     }
 
-    .cyber-hero__breach {
-      position: relative;
-      inset: auto;
-      height: 5.5rem;
-      margin-top: 1rem;
-    }
-
-    .cyber-hero__breach-band {
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .cyber-hero__breach-core {
-      left: 38%;
-      width: 24%;
-      height: 112%;
-    }
-
-    .cyber-hero__breach-label {
-      right: auto;
-      left: 0.65rem;
-      top: -0.8rem;
-    }
   }
 }

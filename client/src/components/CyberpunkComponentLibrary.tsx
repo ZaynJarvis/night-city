@@ -1,10 +1,11 @@
 /*
 File-specific style reminder — Tactical Neo-Militarism, now with visible accent dominance:
 Use black only as structural depth. The eye must read signal red, phosphor green, telemetry cyan, and indigo immediately.
-The hero should feel like a widescreen terminal stack with a breach band crossing layout boundaries and interacting with the image plane.
-Hover states should suggest unstable signal routing: channel jumps, scanline breakup, and chromatic offsets rather than soft SaaS fades.
+The hero should feel like a widescreen terminal stack with cohesive title color, a localized inversion window inside COMPONENT, and restrained but visible accent-channel energy.
+Hover states should suggest unstable signal routing through irregular jitter and edge-born rectangular artifact blocks that appear briefly, then collapse back to a stable resting frame.
 */
 
+import { useEffect } from "react";
 import { Cpu, LibraryBig, RadioTower, ShieldAlert, SquareTerminal, SwatchBook, Type } from "lucide-react";
 import { SignalPanel } from "@/components/SignalPanel";
 import { TerminalPreview } from "@/components/TerminalPreview";
@@ -36,6 +37,54 @@ const heroAccentChannels = [
 ];
 
 export function CyberpunkComponentLibrary() {
+  useEffect(() => {
+    const glitchTargets = Array.from(document.querySelectorAll<HTMLElement>(".glitch-hover"));
+
+    const randomBetween = (min: number, max: number) => Math.random() * (max - min) + min;
+    const randomSigned = (distance: number) => `${randomBetween(-distance, distance).toFixed(2)}px`;
+    const randomPercent = (min: number, max: number) => `${randomBetween(min, max).toFixed(1)}%`;
+    const randomLength = (min: number, max: number) => `${randomBetween(min, max).toFixed(2)}rem`;
+    const applyGlitchSeed = (element: HTMLElement) => {
+      element.style.setProperty("--glitch-x-1", randomSigned(1.8));
+      element.style.setProperty("--glitch-y-1", randomSigned(1.2));
+      element.style.setProperty("--glitch-x-2", randomSigned(2.8));
+      element.style.setProperty("--glitch-y-2", randomSigned(1.5));
+      element.style.setProperty("--glitch-x-3", randomSigned(1.6));
+      element.style.setProperty("--glitch-y-3", randomSigned(1.1));
+      element.style.setProperty("--glitch-skew-1", `${randomBetween(-1.2, 1.2).toFixed(2)}deg`);
+      element.style.setProperty("--glitch-skew-2", `${randomBetween(-1.4, 1.4).toFixed(2)}deg`);
+      element.style.setProperty("--artifact-a-y", randomPercent(6, 32));
+      element.style.setProperty("--artifact-b-y", randomPercent(18, 54));
+      element.style.setProperty("--artifact-c-y", randomPercent(10, 28));
+      element.style.setProperty("--artifact-d-y", randomPercent(8, 26));
+      element.style.setProperty("--artifact-a-w", randomPercent(12, 26));
+      element.style.setProperty("--artifact-b-w", randomPercent(14, 28));
+      element.style.setProperty("--artifact-c-w", randomPercent(10, 22));
+      element.style.setProperty("--artifact-d-w", randomPercent(12, 24));
+      element.style.setProperty("--artifact-a-h", randomLength(0.25, 0.75));
+      element.style.setProperty("--artifact-b-h", randomLength(0.3, 0.9));
+      element.style.setProperty("--artifact-c-h", randomLength(0.25, 0.85));
+      element.style.setProperty("--artifact-d-h", randomLength(0.35, 1));
+      element.style.setProperty("--artifact-shift", `${randomBetween(-8, 8).toFixed(1)}%`);
+      element.style.setProperty("--artifact-drift", `${randomBetween(-5, 5).toFixed(1)}%`);
+    };
+
+    const listeners = glitchTargets.map((element) => {
+      const handleActivate = () => applyGlitchSeed(element);
+      element.addEventListener("pointerenter", handleActivate);
+      element.addEventListener("focus", handleActivate);
+      handleActivate();
+      return { element, handleActivate };
+    });
+
+    return () => {
+      listeners.forEach(({ element, handleActivate }) => {
+        element.removeEventListener("pointerenter", handleActivate);
+        element.removeEventListener("focus", handleActivate);
+      });
+    };
+  }, []);
+
   return (
     <div className="cyber-library">
       <section className="cyber-hero">
@@ -49,7 +98,9 @@ export function CyberpunkComponentLibrary() {
               HEAVY
             </span>
             <span className="cyber-hero__title-line" data-tone="terminal">
-              COMPONENT
+              <span className="cyber-hero__title-word cyber-hero__title-word--inverted" data-text="COMPONENT">
+                COMPONENT
+              </span>
             </span>
             <span className="cyber-hero__title-line" data-tone="telemetry">
               LIBRARY
@@ -93,11 +144,6 @@ export function CyberpunkComponentLibrary() {
             <img src={assetUrls.hero} alt="Cyberpunk 2077 user interface reference cover" />
           </div>
 
-          <div className="cyber-hero__breach" aria-hidden="true">
-            <div className="cyber-hero__breach-band" />
-            <div className="cyber-hero__breach-core" />
-            <span className="cyber-hero__breach-label">INVERTED OVERFLOW</span>
-          </div>
 
           <div className="hero-card hero-card--overlay hero-card--telemetry">
             <div className="hero-card__rail">
