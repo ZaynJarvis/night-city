@@ -1,6 +1,9 @@
-// Design philosophy: Tactical Neo-Militarism as a generated showcase.
-// This component renders the library from structured design-system data so the user gets
-// both a standalone page and reusable code that can scale with additional themed components.
+/*
+File-specific style reminder — Tactical Neo-Militarism, now with visible accent dominance:
+Use black only as structural depth. The eye must read signal red, phosphor green, telemetry cyan, and indigo immediately.
+The hero should feel like a widescreen terminal stack with a breach band crossing layout boundaries and interacting with the image plane.
+Hover states should suggest unstable signal routing: channel jumps, scanline breakup, and chromatic offsets rather than soft SaaS fades.
+*/
 
 import { Cpu, LibraryBig, RadioTower, ShieldAlert, SquareTerminal, SwatchBook, Type } from "lucide-react";
 import { SignalPanel } from "@/components/SignalPanel";
@@ -25,59 +28,89 @@ const toneClass: Record<AccentTone, string> = {
   neutral: "tone-neutral",
 };
 
+const heroAccentChannels = [
+  { label: "SIGNAL RED", value: "#F75049", tone: "critical" as AccentTone },
+  { label: "PHOSPHOR", value: "#73F855", tone: "terminal" as AccentTone },
+  { label: "FOCUS CYAN", value: "#5EF6FF", tone: "telemetry" as AccentTone },
+  { label: "DEEP INDIGO", value: "#0E0EE7", tone: "indigo" as AccentTone },
+];
+
 export function CyberpunkComponentLibrary() {
   return (
     <div className="cyber-library">
       <section className="cyber-hero">
         <div className="cyber-hero__copy">
           <p className="cyber-hero__eyebrow">CYBERPUNK COMPONENT LIBRARY // STANDALONE PAGE</p>
-          <h1 className="cyber-hero__title">Accent-heavy components for a Night City terminal stack.</h1>
+          <h1 className="cyber-hero__title" aria-label="Accent-heavy component library for a Night City terminal stack.">
+            <span className="cyber-hero__title-line" data-tone="neutral">
+              ACCENT-
+            </span>
+            <span className="cyber-hero__title-line" data-tone="critical">
+              HEAVY
+            </span>
+            <span className="cyber-hero__title-line" data-tone="terminal">
+              COMPONENT
+            </span>
+            <span className="cyber-hero__title-line" data-tone="telemetry">
+              LIBRARY
+            </span>
+            <span className="cyber-hero__title-line" data-tone="indigo">
+              STACK.
+            </span>
+          </h1>
           <p className="cyber-hero__body">
-            This library shifts the bundle away from mostly black presentation and toward a more useful system: louder signal red, brighter phosphor green, cyan telemetry, and reusable clipped components rendered from structured design data.
+            The page now pushes accent channels into the foreground instead of leaving them trapped inside dark substrate. Signal red drives decisive interaction, phosphor green owns terminal selection, cyan marks telemetry and navigation, and indigo deepens system-state layers.
           </p>
+
+          <div className="cyber-hero__accent-rail" aria-label="Accent color channels">
+            {heroAccentChannels.map((channel) => (
+              <div key={channel.label} className={`accent-rail-card tone-${channel.tone}`}>
+                <span>{channel.label}</span>
+                <strong>{channel.value}</strong>
+              </div>
+            ))}
+          </div>
+
           <div className="cyber-hero__chips">
             {statusChips.map((chip) => (
-              <span key={chip.label} className={`status-chip ${toneClass[chip.accent]}`}>
+              <span key={chip.label} className={`status-chip glitch-hover ${toneClass[chip.accent]}`}>
                 {chip.label}
               </span>
             ))}
           </div>
           <div className="cyber-hero__actions">
-            <a href="#component-library" className="action-button action-button--critical">
+            <a href="#component-library" className="action-button action-button--critical glitch-hover">
               OPEN LIBRARY
             </a>
-            <a href="#open-source" className="action-button action-button--telemetry">
+            <a href="#open-source" className="action-button action-button--telemetry glitch-hover">
               VIEW OPEN-SOURCE REFERENCES
             </a>
           </div>
         </div>
 
         <div className="cyber-hero__visual">
-          <div className="hero-card hero-card--image">
+          <div className="hero-card hero-card--image hero-card--glow">
             <img src={assetUrls.hero} alt="Cyberpunk 2077 user interface reference cover" />
           </div>
-          <div className="hero-card hero-card--overlay">
+
+          <div className="cyber-hero__breach" aria-hidden="true">
+            <div className="cyber-hero__breach-band" />
+            <div className="cyber-hero__breach-core" />
+            <span className="cyber-hero__breach-label">INVERTED OVERFLOW</span>
+          </div>
+
+          <div className="hero-card hero-card--overlay hero-card--telemetry">
             <div className="hero-card__rail">
               <RadioTower size={18} />
               <span>ACCENT CHANNELS BOOSTED</span>
             </div>
             <div className="hero-stat-grid">
-              <div>
-                <span>PRIMARY</span>
-                <strong>#F75049</strong>
-              </div>
-              <div>
-                <span>TERMINAL</span>
-                <strong>#73F855</strong>
-              </div>
-              <div>
-                <span>FOCUS</span>
-                <strong>#5EF6FF</strong>
-              </div>
-              <div>
-                <span>DEPTH</span>
-                <strong>#0E0EE7</strong>
-              </div>
+              {heroAccentChannels.map((channel) => (
+                <div key={channel.label} data-tone={channel.tone} className="glitch-hover">
+                  <span>{channel.label}</span>
+                  <strong>{channel.value}</strong>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -87,13 +120,13 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="PALETTE // SEMANTIC ROLES"
           title="Color system"
-          body="Use black as substrate, not destination. Each panel below assigns a role to accent channels so the interface stays expressive and operational."
+          body="Use black as substrate, not destination. The accent channels below should be seen immediately and assigned clearly: red for commit and threat, lime for active selection, cyan for focus and telemetry, indigo for deep-system staging."
           tone="critical"
           className="span-7"
         >
           <div className="palette-grid">
             {palette.map((token) => (
-              <article key={token.name} className="palette-card" data-tone={token.tone}>
+              <article key={token.name} className="palette-card glitch-hover" data-tone={token.tone}>
                 <div className="palette-card__swatch" style={{ background: token.value }} />
                 <div>
                   <p className="palette-card__title">{token.name}</p>
@@ -108,13 +141,13 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="TYPE // HIERARCHY"
           title="Font system"
-          body="Rajdhani governs interaction, Orbitron brands spectacle, and Space Mono stabilizes machine-readable content."
+          body="Rajdhani governs interaction, Orbitron brands spectacle, and Space Mono stabilizes machine-readable content. Hover states deliberately fracture color, but typography must remain disciplined and legible."
           tone="telemetry"
           className="span-5"
         >
           <div className="font-stack-preview">
             {fontSystem.map((font) => (
-              <article key={font.family} className="font-card">
+              <article key={font.family} className="font-card glitch-hover">
                 <p className="font-card__family">{font.family}</p>
                 <p className="font-card__role">{font.role}</p>
                 <p className="font-card__sample" data-font={font.family}>
@@ -131,7 +164,7 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="TERMINAL // MAILBOX, CONFIG, SELECTION"
           title="Terminal interface patterns"
-          body="The component library includes a reusable terminal preview that demonstrates mailbox density, configuration surfaces, and selection behavior with explicit accent semantics."
+          body="The component library includes a reusable terminal preview that now carries louder active-state color, harsher contrast jumps, and more explicit machine-selection behavior."
           tone="terminal"
         >
           <TerminalPreview />
@@ -142,7 +175,7 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="GENERATOR // COMPONENT SPECIFICATIONS"
           title="Generated component catalog"
-          body="Each section is rendered from structured data so the library can scale into a larger theme package without rewriting page code."
+          body="Each section is rendered from structured data so the library can scale into a larger theme package without rewriting page code. The hover treatment simulates unstable routing instead of soft opacity-only motion."
           tone="warning"
           className="span-12"
         >
@@ -156,7 +189,7 @@ export function CyberpunkComponentLibrary() {
                 </div>
                 <div className="generated-library__cards">
                   {section.components.map((component) => (
-                    <div key={component.name} className="component-card" data-tone={component.accent}>
+                    <div key={component.name} className="component-card glitch-hover" data-tone={component.accent}>
                       <div className="component-card__header">
                         <span className={`status-chip ${toneClass[component.accent]}`}>{component.accent}</span>
                         <strong>{component.name}</strong>
@@ -181,7 +214,7 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="CODE // EMBEDDED EXAMPLE"
           title="Implementation starter"
-          body="The page ships with reusable components, but the command block below shows the intent directly: louder accent channels and a standalone route for the library itself."
+          body="The route ships with reusable components, but the command block below keeps the implementation intent explicit: standalone library routing, louder accent channels, and overtly unstable hover behavior."
           tone="indigo"
           className="span-6"
         >
@@ -195,7 +228,7 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="ASSETS // REFERENCE PANELS"
           title="Visual reference surfaces"
-          body="The library retains direct image references for the original art direction while shifting actual UI composition toward a more accent-rich implementation."
+          body="The original art references remain visible, but the live library no longer buries its accents beneath neutral darkness. The right column acts as a bright signal field, not a passive screenshot holder."
           tone="telemetry"
           className="span-6"
         >
@@ -211,12 +244,12 @@ export function CyberpunkComponentLibrary() {
         <SignalPanel
           eyebrow="OPEN SOURCE // BUILT REFERENCES"
           title="Already-built libraries worth using"
-          body="The closest publicly built match is CYBERCORE CSS. Arwes is the strongest polished React framework. The list below includes the repo and public build for each candidate."
+          body="The closest publicly built match is CYBERCORE CSS. Arwes is the strongest polished React framework. The list below keeps both the live build and source repository visible so you can adopt or fork immediately."
           tone="critical"
         >
           <div className="reference-library-list">
             {referenceLibraries.map((library, index) => (
-              <article key={library.name} className="reference-library-card" data-tone={index === 0 ? "critical" : "telemetry"}>
+              <article key={library.name} className="reference-library-card glitch-hover" data-tone={index === 0 ? "critical" : "telemetry"}>
                 <div className="reference-library-card__title">
                   {index === 0 ? <ShieldAlert size={18} /> : index === 1 ? <LibraryBig size={18} /> : index === 2 ? <SwatchBook size={18} /> : <SquareTerminal size={18} />}
                   <div>
@@ -226,10 +259,10 @@ export function CyberpunkComponentLibrary() {
                 </div>
                 <p className="reference-library-card__body">{library.note}</p>
                 <div className="reference-library-card__links">
-                  <a href={library.url} target="_blank" rel="noreferrer">
+                  <a href={library.url} target="_blank" rel="noreferrer" className="glitch-hover">
                     Live build
                   </a>
-                  <a href={library.repo} target="_blank" rel="noreferrer">
+                  <a href={library.repo} target="_blank" rel="noreferrer" className="glitch-hover">
                     Source repo
                   </a>
                 </div>

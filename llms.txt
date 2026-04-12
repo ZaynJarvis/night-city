@@ -1,0 +1,74 @@
+# Cyberpunk Component Library Bundle: `llms.txt`
+
+This file gives language models and automation tools a compact explanation of the **color system**, **semantic usage rules**, and **reference files** inside this Cyberpunk 2077-inspired bundle. The palette and behavior model are synthesized from the two reverse-engineered Behance UI studies supplied by the user, the terminal/mailbox reference imagery, and supplementary typography and HUD analysis.[1] [2] [3] [4]
+
+## Color System
+
+The system is not intended to treat every bright color as interchangeable. It works best when each accent has a **specific operational meaning** and appears against a dark structural substrate so signal colors read as intentional rather than decorative.[1] [2] The current component-library direction is intentionally more accent-forward than the earlier draft: the accents should be plainly visible in hero areas, selection states, focus rails, data strips, and hover behaviors.
+
+| Token | Hex | Semantic role | Primary usage | Avoid |
+|---|---:|---|---|---|
+| `surface.base` | `#050505` | Structural substrate | Main page background, terminal void, negative space | Letting it dominate every panel to the point the interface reads as plain black |
+| `accent.primary` | `#F75049` | Tactical signal red | Hero rails, alert actions, active borders, major callouts | Using it as small incidental text with no structural support |
+| `accent.secondary` | `#BB4141` | Heat / warning red | Error surfaces, destructive states, stressed telemetry | Replacing the primary signal red everywhere |
+| `accent.terminal` | `#73F855` | Phosphor-positive state | Mailbox selection, terminal confirmation, schematics, high-energy overlays | Using it for long body copy blocks |
+| `accent.focus` | `#5EF6FF` | Focus / telemetry cyan | Hover, focus rings, data lines, precision UI, targeting feedback | Filling entire large panels with solid cyan |
+| `accent.network` | `#0E0EE7` | Deep technical blue | Network traces, inversion bands, deep machine overlays | Competing with red as the dominant signal color |
+| `text.primary` | `#FFFFFF` | Main foreground | Large headings, body text, high-contrast labels | Using it for every border and decorative line |
+
+## Color Application Logic
+
+The bundle follows a **one-dominant-accent-per-surface** rule. A panel may carry supporting accents, but it should announce one main state clearly. Tactical presentation panels are usually **red-led**, terminal and mailbox panels can become **green-led**, while precision interaction and hover feedback should lean **cyan**. Blue should stay comparatively sparse so it still feels technical when it appears.[1] [2]
+
+| Context | Dominant color | Supporting colors | Notes |
+|---|---|---|---|
+| Hero / marketing frame | `#F75049` | `#5EF6FF`, `#FFFFFF`, limited `#73F855` | The hero should visibly glow with accent color instead of resting on black mass |
+| Terminal / config view | `#73F855` | `#5EF6FF`, `#050505`, `#FFFFFF` | Green should feel like a system state, not a decorative wash |
+| Hover / interactive glitch | `#5EF6FF` → jump to `#F75049` or `#73F855` | `#FFFFFF` | Use short chromatic jumps, scanline flicker, and edge flashes rather than soft fades |
+| Error / danger state | `#BB4141` or `#F75049` | `#050505`, `#FFFFFF` | Prefer hard-edged warning blocks and clipped action rails |
+| Inverted overflow band | `#0E0EE7` or `#F75049` | `#5EF6FF`, `#FFFFFF` | Use for widescreen collision areas where media crosses a boundary |
+
+## Interaction Semantics
+
+Hover is expected to behave like a **signal interruption**, not a gentle modern web fade. The preferred behavior is a short **color-jump glitch** in which a border, label, or clipped rail snaps between cyan, red, and green for a few frames before resolving to a stable highlight color. This matches the bundle’s goal of preserving a hostile, system-like response language rather than soft consumer UI motion.[1] [2] [4]
+
+The widescreen overflow treatment should create the feeling that media is **bleeding across a control boundary**. Use clipped masks, inversion bands, or contrasting rails where an image crosses a panel edge. The effect should make the accent color more visible, not bury it behind a black container.
+
+## Typography System
+
+This bundle uses **Rajdhani** as the primary implementation face, **Orbitron** as a display accent, and a monospaced companion such as **Share Tech Mono** for terminal rhythm. This is an implementation-oriented approximation based on the visual language documented in the supplied references and secondary typography observation, not a claim of official CD PROJEKT RED source files.[1] [3]
+
+## Reference Files In This Bundle
+
+The files below are the main local references for automated systems and collaborators.
+
+| File | Purpose | Recommended use |
+|---|---|---|
+| `CYBERPUNK2077_DESIGN_SYSTEM.md` | Main reverse-engineered design-system document | Start here for palette roles, geometry, typography, and component logic |
+| `TERMINAL_INTERFACE_GUIDE.md` | Terminal, mailbox, configuration, and selection behavior | Use when building command surfaces, chat panes, settings, or split-list layouts |
+| `BRAND_GUIDELINES.md` | Short operational style guide | Use for quick visual decisions and consistency checks |
+| `design-tokens.json` | Machine-readable token export | Use for direct implementation in apps, scripts, or theming pipelines |
+| `browser_research_notes.md` | Raw evidence and validation notes | Use for traceability and source-grounded review |
+| `llms.txt` | This compact machine-oriented summary | Use for prompt grounding, generation constraints, and code assistants |
+
+## External Source References
+
+These external references informed the extraction and are the best source links to mention when another system asks where the visual rules came from.
+
+| Ref | Source | Relevance |
+|---|---|---|
+| `[1]` | Behance, *Cyberpunk 2077 User Interface (Part 1)* | Core reverse-engineered UI language, palette framing, typography behavior, layout logic |
+| `[2]` | Behance, *Cyberpunk 2077 User Interface (Part 2)* | Additional color, vocabulary, layout, and component evidence |
+| `[3]` | Fonts In Use, *Cyberpunk 2077 video game* | Secondary typography context |
+| `[4]` | Super Jump, *A UX analysis of Cyberpunk 2077’s HUD* | Secondary interaction and readability observations |
+
+## Constraint
+
+This package is an **inspired reverse-engineering and implementation bundle**. It is not an official game UI asset dump, not an extracted proprietary design bible, and not a claim of canonical internal specifications.
+
+## References
+
+[1]: https://www.behance.net/gallery/118663901/Cyberpunk-2077User-Interface-(Part-1) "Cyberpunk 2077 User Interface (Part 1)"
+[2]: https://www.behance.net/gallery/133185623/Cyberpunk-2077User-Interface-(Part-2) "Cyberpunk 2077 User Interface (Part 2)"
+[3]: https://fontsinuse.com/uses/60926/cyberpunk-2077-video-game "Cyberpunk 2077 video game - Fonts In Use"
+[4]: https://medium.com/super-jump/a-ux-analysis-of-cyberpunk-2077s-hud-f74afe6b9961 "A UX analysis of Cyberpunk 2077’s HUD"
