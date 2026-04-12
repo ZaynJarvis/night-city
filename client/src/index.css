@@ -340,6 +340,7 @@ Avoid generic rounded cards, soft SaaS gradients, and large dead black areas. Fa
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.55rem;
     min-height: 3.3rem;
     padding: 0.95rem 1.25rem;
     border: 1px solid rgba(255, 255, 255, 0.16);
@@ -1489,34 +1490,21 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
 
   .glitch-hover:hover,
   .glitch-hover:focus-visible,
-  .palette-card:hover,
-  .font-card:hover,
-  .component-card:hover,
-  .reference-library-card:hover,
   .terminal-message-row:hover,
   .terminal-tabs__button:hover,
   .terminal-action:hover,
   .selection-matrix__cell:hover,
-  .config-grid__item:hover,
-  .signal-panel:hover {
+  .config-grid__item:hover {
     animation: cp-glitch-jump 340ms steps(4, jump-none) 1, cp-hue-strobe 420ms linear 1;
   }
 
   .glitch-hover:hover::before,
-  .glitch-hover:focus-visible::before,
-  .palette-card:hover::before,
-  .font-card:hover::before,
-  .component-card:hover::before,
-  .reference-library-card:hover::before {
+  .glitch-hover:focus-visible::before {
     animation: cp-edge-blocks 480ms steps(8, jump-none) 1 30ms;
   }
 
   .glitch-hover:hover::after,
-  .glitch-hover:focus-visible::after,
-  .palette-card:hover::after,
-  .font-card:hover::after,
-  .component-card:hover::after,
-  .reference-library-card:hover::after {
+  .glitch-hover:focus-visible::after {
     animation: cp-edge-blocks-tail 560ms steps(7, jump-none) 1 80ms;
   }
 
@@ -1638,6 +1626,7 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
   .terminal-message-row:hover {
     border-color: rgba(94, 246, 255, 0.48);
     background: linear-gradient(90deg, rgba(247, 80, 73, 0.1), rgba(94, 246, 255, 0.1), rgba(255, 255, 255, 0.04));
+    color: #fff;
   }
 
   .terminal-readout {
@@ -1687,5 +1676,64 @@ Hover behavior should resemble unstable channel routing with color jumps and ras
       grid-template-columns: 1fr;
     }
 
+  }
+
+  /* === Scanline Tear — horizontal clip-path displacement for buttons & small elements === */
+
+  .scanline-tear {
+    position: relative;
+    display: inline-block;
+  }
+
+  .scanline-tear__base {
+    position: relative;
+    z-index: 1;
+  }
+
+  .scanline-tear__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
+    mix-blend-mode: screen;
+    border-left: 1px solid rgba(247, 80, 73, 0.6);
+    border-right: 1px solid rgba(94, 246, 255, 0.6);
+    filter: saturate(1.4) brightness(1.15);
+  }
+
+  .scanline-tear__overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(247, 80, 73, 0.25), transparent 40%, rgba(94, 246, 255, 0.25));
+    pointer-events: none;
+  }
+
+  /* === Hologram — 3D perspective + scanline sweep for section containers === */
+
+  .hologram {
+    perspective: 800px;
+    transform-style: preserve-3d;
+  }
+
+  .hologram__inner {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.05s linear;
+    will-change: transform, opacity, box-shadow;
+  }
+
+  .hologram__scanline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(94, 246, 255, 0.5), rgba(94, 246, 255, 0.8), rgba(94, 246, 255, 0.5), transparent);
+    box-shadow: 0 0 8px rgba(94, 246, 255, 0.6), 0 0 16px rgba(94, 246, 255, 0.3);
+    pointer-events: none;
+    z-index: 10;
+    transition: top 0.05s linear;
   }
 }
